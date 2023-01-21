@@ -1,107 +1,108 @@
+
 let order = [];
 let clickedOrder = [];
 let score = 0;
-
-//0 - verde
-//1 - vermelho
-//2 - amarelo
-//3 - azul
+let record = 0;
+var timer;
 
 const blue = document.querySelector('.blue');
 const red = document.querySelector('.red');
 const green = document.querySelector('.green');
 const yellow = document.querySelector('.yellow');
 
-//cria ordem aletoria de cores
+const noteGreen = new Audio('Audio/Green_E4.oga');
+const noteRed = new Audio('Audio/Red_A4.oga');
+const noteYellow = new Audio('Audio/Yellow_C5.oga'); // Actually C#5
+const noteBlue = new Audio('Audio/Blue_E5.oga');
+
+const colors = [green, red, yellow, blue];
+const notes = [noteGreen, noteRed, noteYellow, noteBlue];
+const start = document.querySelector('.start');
+const _placar = document.getElementById('placar');
+const _record = document.getElementById('record');
+
+//ordem aleatória de cores
 let shuffleOrder = () => {
     let colorOrder = Math.floor(Math.random() * 4);
     order[order.length] = colorOrder;
     clickedOrder = [];
 
     for(let i in order) {
-        let elementColor = createColorElement(order[i]);
-        lightColor(elementColor, Number(i) + 1);
+        let elementColor = colors[order[i]];
+        lightColor(elementColor, order[i], Number(i) + 1);
     }
 }
 
-//acende a proxima cor
-let lightColor = (element, number) => {
-    number = number * 500;
+//acende próxima cor
+let lightColor = (element, color, number) => {
+    number = number * 1000;
     setTimeout(() => {
-        element.classList.add('selected');
-    }, number - 250);
+        element.classList.add('selected'); 
+        notes[color].play();
+    }, number - 500);
     setTimeout(() => {
         element.classList.remove('selected');
-    });
+    }, number);
 }
 
-//checa se os botoes clicados são os mesmos da ordem gerada no jogo
+//checa ordem do input
 let checkOrder = () => {
     for(let i in clickedOrder) {
-        if(clickedOrder[i] != order[i]) {
+        if(clickedOrder[i] != order[i]){
             gameOver();
-            break;
+            return;
         }
     }
     if(clickedOrder.length == order.length) {
-        alert(`Pontuação: ${score}\nVocê acertou! Iniciando próximo nível!`);
         nextLevel();
     }
 }
 
-//funcao para o clique do usuario
+//input
 let click = (color) => {
     clickedOrder[clickedOrder.length] = color;
-    createColorElement(color).classList.add('selected');
+    colors[color].classList.add('selected');
+    notes[color].play();
 
     setTimeout(() => {
-        createColorElement(color).classList.remove('selected');
-        checkOrder();
-    },250);
+    colors[color].classList.remove('selected');
+    }, 250);
+    timer = window.setTimeout(() => { // prevent timer too early for faster players
+        if(order.length != 0) { // because I like to play the notes before start
+            checkOrder();
+        }
+    }, 1000);
 }
 
-//funcao que retorna a cor
-let createColorElement = (color) => {
-    if(color == 0) {
-        return green;
-    } else if(color == 1) {
-        return red;
-    } else if (color == 2) {
-        return yellow;
-    } else if (color == 3) {
-        return blue;
-    }
-}
-
-//funcao para proximo nivel do jogo
 let nextLevel = () => {
-    score++;
+    if(order.length != 0) {
+        score++;
+    }
+    _placar.innerHTML = score;
+    _record.innerHTML = record;
     shuffleOrder();
 }
 
-//funcao para game over
 let gameOver = () => {
-    alert(`Pontuação: ${score}!\nVocê perdeu o jogo!\nClique em OK para iniciar um novo jogo`);
+    if(score > record) {record = score};
+    window.location = document.querySelector(".gameover").href;
+    reset();
+}
+
+let reset = () => {
     order = [];
     clickedOrder = [];
-
-    playGame();
-}
-
-//funcao de inicio do jogo
-let playGame = () => {
-    alert('Bem vindo ao Gênesis! Iniciando novo jogo!');
     score = 0;
-
-    nextLevel();
 }
 
-//eventos de clique para as cores
-green.onclick = () => click(0);
-red.onclick = () => click(1);
-yellow.onclick = () => click(2);
-blue.onclick = () => click(3);
+green.addEventListener('click', () => {clearTimeout(timer); click(0)});
+red.addEventListener('click', () => {clearTimeout(timer); click(1)});
+yellow.addEventListener('click', () => {clearTimeout(timer); click(2)});
+blue.addEventListener('click', () => {clearTimeout(timer); click(3)});
 
+start.addEventListener('click', () => {
+    reset();
+    nextLevel();
+});
 
-//inicio do jogo
-playGame();
+document.querySelector(".retry").addEventListener('click', () => {gameOver()});
