@@ -1,0 +1,13 @@
+@media screen and (max-width: 1000px) {
+    .mainGame {
+        flex-direction: column;
+    }
+    .genius {
+        margin: 15%;
+        width: 50vw;
+        height: 50vw;
+    }
+    .col-sm-3 {
+        width: 100%;
+    }
+}

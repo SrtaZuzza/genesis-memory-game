@@ -1,0 +1,192 @@
+:root {
+    --light: #c1d9f2;
+    --back: #293268;
+    --shadow: rgba(0,0,0,.6);
+}
+
+html, body {
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* -------------------------------------------- Body -- */
+
+body {
+    height: 100vh;
+    margin: 0;
+    background-color: #12173d;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 2vh;
+    color: var(--light);
+}
+
+header {
+    display: flex;
+    height: 15%;
+    align-items: center;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 6vh;
+}
+
+h2 {
+    font-weight: 400;
+    font-size: 5vh;
+}
+
+i {
+    color: var(--light);
+    padding-right: 8px;
+}
+
+.btn:hover, i:hover {
+    color: white;
+}
+
+.wrapper {
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.coluna {
+    background-color: var(--back);
+}
+
+/* -------------------------------------------- Pop ups -- */
+
+.popDialog{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--shadow);
+    backdrop-filter: blur(2px) saturate(150%);
+    z-index: 99999;
+    opacity: 0;
+    -webkit-transition: opacity 200ms ease-in-out;
+    -moz-transition: opacity 200ms ease-in-out;
+    transition: opacity 200ms ease-in-out;
+    pointer-events: none;
+}
+
+.popDialog:target{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popDialog>div{
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+    max-width: 650px;
+    max-height: 600px;
+    position: relative;
+    margin:5% auto;
+    padding: 2%;
+}
+
+.popDialog:target>div{
+    background: var(--back);
+    margin: 8% auto;
+}
+
+.close {
+    color: var(--light);
+    position: absolute;
+    top: -50px;
+    right: 1%;
+    line-height: 30px;
+    text-align: center;
+    font-size: 30px;
+    z-index: 99999;
+}
+
+.close:hover {
+    text-decoration: none; 
+    color: white;
+}
+
+/* -------------------------------------------- Game -- */
+
+.mainGame {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.genius {
+    display: grid;
+    grid-template-areas: 'verde vermelho' /* COR EM PT-BR POR CAUSA DOS NOMES RESERVADOS*/
+    'amarelo azul';
+    grid-gap: 10px;
+    /* margin: auto; */
+    border: 15px solid var(--back);
+    background-color: var(--back);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 100%;
+    /* to use viewport based units we can safely override the old units in this way */
+    width: 25vw;
+    height: 25vw;
+    padding-bottom: 0vw;
+}
+
+.green {
+    grid-area: verde;
+    background-color: #42bc7f;
+    border-top-left-radius: 100%;
+    opacity: .8;
+}
+
+.red {
+    grid-area: vermelho;
+    background-color: #a52639;
+    border-top-right-radius: 100%;
+    opacity: .8;
+}
+
+.yellow {
+    grid-area: amarelo;
+    background-color: #ffe091;
+    border-bottom-left-radius: 100%;
+    opacity: .8;
+}
+
+.blue {
+    grid-area: azul;
+    background-color: #354ab2;
+    border-bottom-right-radius: 100%;
+    opacity: .8;
+}
+
+.selected, .blue:hover, .green:hover, .red:hover, .yellow:hover {
+    filter: saturate(200%);
+    opacity: 1;
+}
+
+.start {
+    margin: 15%;
+    padding: 20px;
+    background: #5d2f8c;
+    border: 0px;
+    border-radius: 3px;
+    color: var(--light);
+    font-size: 4vh;
+}
+
+.placar {
+    height: 5%;
+    margin: 1% auto;
+}
