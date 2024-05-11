@@ -10,10 +10,10 @@ const red = document.querySelector('.red');
 const green = document.querySelector('.green');
 const yellow = document.querySelector('.yellow');
 
-const noteGreen = new Audio('Audio/Green_E4.oga');
-const noteRed = new Audio('Audio/Red_A4.oga');
-const noteYellow = new Audio('Audio/Yellow_C5.oga'); // Actually C#5
-const noteBlue = new Audio('Audio/Blue_E5.oga');
+const noteGreen = new Audio('audio/Green_E4.oga');
+const noteRed = new Audio('audio/Red_A4.oga');
+const noteYellow = new Audio('audio/Yellow_C5.oga'); // Actually C#5
+const noteBlue = new Audio('audio/Blue_E5.oga');
 
 const colors = [green, red, yellow, blue];
 const notes = [noteGreen, noteRed, noteYellow, noteBlue];
@@ -95,14 +95,12 @@ let reset = () => {
     score = 0;
 }
 
-green.addEventListener('click', () => {clearTimeout(timer); click(0)});
-red.addEventListener('click', () => {clearTimeout(timer); click(1)});
-yellow.addEventListener('click', () => {clearTimeout(timer); click(2)});
-blue.addEventListener('click', () => {clearTimeout(timer); click(3)});
+let addListeners = () => {
+    for(let i in colors) {
+        colors[i].addEventListener('click', () => {clearTimeout(timer); click(i)})
+    }
+    start.addEventListener('click', () => {reset();nextLevel();});
+    document.querySelector(".retry").addEventListener('click', () => {gameOver()});
+}
 
-start.addEventListener('click', () => {
-    reset();
-    nextLevel();
-});
-
-document.querySelector(".retry").addEventListener('click', () => {gameOver()});
+addListeners();
